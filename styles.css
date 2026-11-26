@@ -13,6 +13,8 @@ figure,p,h1,h2,h3{margin:0}
 .wrap{width:min(100%,112rem);margin-inline:auto;padding-inline:var(--gutter)}
 .skip{position:absolute;left:1rem;top:-10rem;background:var(--ink);color:white;padding:.8rem;z-index:20}
 .skip:focus{top:1rem}
+.site-header{position:sticky;top:0;z-index:10;background:var(--paper)}
+#about,#work,#contact-form{scroll-margin-top:7rem}
 .topbar{display:flex;align-items:center;justify-content:space-between;gap:2rem;padding-block:1.55rem;border-bottom:1px solid var(--ink)}
 .brand{display:flex;align-items:end;gap:1.1rem}
 .brand-name{display:block;position:relative;background:var(--ink);color:#fff;font:500 clamp(1.15rem,2vw,1.7rem)/.88 Rajdhani,Arial,sans-serif;letter-spacing:.035em;text-transform:uppercase;padding:.65rem 1.9rem .65rem .8rem}
@@ -22,7 +24,7 @@ figure,p,h1,h2,h3{margin:0}
 .nav a{display:inline-flex;align-items:center;min-height:2.75rem}
 .text-link{padding-block:.4rem}
 .nav a:hover,.text-link{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.3em}
-.nav .contact-link{border-bottom:1px solid var(--ink)}
+.nav .contact-link{justify-content:center;padding-inline:.85rem;background:var(--accent);border:1px solid var(--ink);white-space:nowrap}
 .instagram-link{white-space:nowrap}
 .home-topbar{justify-content:flex-end}
 .visually-hidden{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
@@ -167,6 +169,7 @@ body:has(.viewer[open]){overflow:hidden}
   .contact-row{align-items:start;flex-direction:column;gap:1.5rem}.footer-brand{margin-bottom:1.65rem}
 }
 @media(max-width:550px){
+  #about,#work,#contact-form{scroll-margin-top:12rem}
   .topbar{align-items:center;flex-wrap:wrap}.brand-role{display:none}.brand-name{font-size:1.1rem}.nav{display:grid;grid-template-columns:repeat(2,max-content);width:100%;justify-content:space-between;gap:0 .55rem;font-size:.9rem}
   .mast{display:block}.mast h1{font-size:clamp(2.8rem,11vw,4rem)}.mast .text-link{display:none}
   .stage-image{aspect-ratio:1.07}.gallery-bar{display:block;padding:.95rem 0 1rem}
