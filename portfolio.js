@@ -91,6 +91,40 @@ tabs.forEach((button, index) => {
 const filters = Array.from(document.querySelectorAll(".filter[data-filter]"));
 const cards = Array.from(document.querySelectorAll(".photo-tile[data-category], .card[data-category]"));
 const filterStatus = document.querySelector(".filter-status");
+const homeGrid = document.querySelector(".home-grid");
+if (homeGrid) {
+  const desktop = window.matchMedia("(min-width: 761px)");
+  const tiles = cards.map(card => {
+    const image = card.querySelector("img");
+    const width = Number(image.getAttribute("width"));
+    const height = Number(image.getAttribute("height"));
+    image.style.aspectRatio = width + " / " + height;
+    return { card, ratio: height / width };
+  });
+
+  function arrangeGallery() {
+    if (!desktop.matches) {
+      homeGrid.classList.remove("is-sequenced");
+      homeGrid.style.height = "";
+      return;
+    }
+    homeGrid.classList.add("is-sequenced");
+    const columnWidth = homeGrid.getBoundingClientRect().width / 2;
+    const heights = [0, 0];
+    for (const { card, ratio } of tiles) {
+      if (card.hidden) continue;
+      const column = heights[0] <= heights[1] ? 0 : 1;
+      card.style.setProperty("--tile-top", heights[column] + "px");
+      card.style.setProperty("--tile-left", column === 0 ? "0" : "50%");
+      heights[column] += columnWidth * ratio;
+    }
+    homeGrid.style.height = Math.max(...heights) + "px";
+  }
+
+  arrangeGallery();
+  window.addEventListener("resize", arrangeGallery);
+  homeGrid.addEventListener("galleryfilter", arrangeGallery);
+}
 filters.forEach(button => {
   button.addEventListener("click", () => {
     const category = button.dataset.filter;
@@ -106,6 +140,7 @@ filters.forEach(button => {
     if (filterStatus) {
       filterStatus.textContent = visible + (visible === 1 ? " photograph shown." : " photographs shown.");
     }
+    homeGrid?.dispatchEvent(new Event("galleryfilter"));
     fitPhotographs();
   });
 });
