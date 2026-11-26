@@ -23,6 +23,7 @@ figure,p,h1,h2,h3{margin:0}
 .text-link{padding-block:.4rem}
 .nav a:hover,.text-link{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.3em}
 .nav .contact-link{border-bottom:1px solid var(--ink)}
+.instagram-link{white-space:nowrap}
 .mast{display:flex;align-items:end;justify-content:space-between;gap:1.5rem;padding:clamp(2.2rem,4vw,4rem) 0 1.4rem}
 h1,h2,h3,.display{font:500 1rem/1 Rajdhani,Arial,sans-serif;text-transform:uppercase;letter-spacing:.01em}
 h1 em,h2 em{font-style:normal;font-weight:inherit}
@@ -66,6 +67,16 @@ h1 em,h2 em{font-style:normal;font-weight:inherit}
 .contact-row{display:flex;align-items:end;justify-content:space-between;gap:2.5rem}
 .footer h2{font-size:clamp(3rem,6.8vw,8rem)}
 .contact-links{display:flex;flex-direction:column;align-items:start;gap:.9rem}
+.contact-form{display:grid;grid-template-columns:minmax(0,1fr);gap:.5rem;width:min(100%,38rem);margin-top:clamp(2rem,4vw,4rem)}
+.contact-form label{display:block;margin-top:.7rem;font:500 1rem/1.3 Rajdhani,Arial,sans-serif;letter-spacing:.06em;text-transform:uppercase}
+.contact-form input,.contact-form textarea{width:100%;border:1px solid #92988b;border-radius:0;background:transparent;color:var(--paper);padding:.8rem;font:1rem/1.45 Arial,Helvetica,sans-serif}
+.contact-form textarea{resize:vertical;min-height:9rem}
+.contact-form input:focus-visible,.contact-form textarea:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.contact-form button{justify-self:start;border:1px solid var(--paper);background:transparent;color:var(--paper);padding:.8rem 1.4rem;margin-top:.7rem;min-height:2.75rem;font:500 1rem/1 Rajdhani,Arial,sans-serif;text-transform:uppercase;letter-spacing:.07em}
+.contact-form button:hover{color:var(--ink);background:var(--accent);border-color:var(--accent)}
+.contact-form button:disabled{cursor:wait;opacity:.65}
+.form-status{min-height:1.5em;line-height:1.5}
+.form-status:empty{display:none}
 .contact-links a,.footer-bottom a{text-decoration:underline;text-underline-offset:.3em;text-decoration-thickness:1px}
 .footer a:hover{color:var(--accent)}
 .footer-brand{display:block;margin:clamp(3.2rem,7.4vw,9rem) 0 2rem;font:500 clamp(3rem,9.5vw,11rem)/.85 Rajdhani,Arial,sans-serif;letter-spacing:-.02em;text-transform:uppercase}
@@ -79,6 +90,11 @@ h1 em,h2 em{font-style:normal;font-weight:inherit}
 .photo-grid{columns:3;column-gap:clamp(.65rem,1.5vw,1.7rem)}
 .photo-link{display:block;position:relative;break-inside:avoid;margin:0 auto clamp(.65rem,1.5vw,1.7rem);background:#d9ded0;cursor:zoom-in}
 .photo-link img{display:block;width:100%;height:auto}
+.photo-tile{break-inside:avoid;margin:0 0 clamp(1.4rem,2vw,2.5rem)}
+.photo-tile .photo-link{margin-bottom:0}
+.photo-tile figcaption{padding:.65rem 0 0}
+.photo-project{display:inline-block;font:500 .95rem/1.3 Rajdhani,Arial,sans-serif;letter-spacing:.05em;text-transform:uppercase;text-decoration:underline;text-underline-offset:.25em}
+.viewer-project{color:var(--paper);font-size:.9rem;text-decoration:underline;text-underline-offset:.25rem}
 .next-project{border-top:1px solid var(--ink);padding:clamp(2rem,4vw,5rem) 0;display:block;margin-top:clamp(2.5rem,5vw,6rem)}
 .next-project h2{margin-top:.6rem;font-size:clamp(2.6rem,5vw,6rem)}
 .viewer{width:100vw;max-width:100vw;height:100dvh;max-height:none;padding:0;margin:auto;border:0;background:#121313;color:#fff;position:fixed;inset:0}
@@ -109,7 +125,7 @@ body:has(.viewer[open]){overflow:hidden}
   .contact-row{align-items:start;flex-direction:column;gap:1.5rem}.footer-brand{margin-bottom:1.65rem}
 }
 @media(max-width:550px){
-  .topbar{align-items:center}.brand-role{display:none}.brand-name{font-size:1.1rem}.nav{gap:.75rem;font-size:.9rem}
+  .topbar{align-items:center;flex-wrap:wrap}.brand-role{display:none}.brand-name{font-size:1.1rem}.nav{display:grid;grid-template-columns:repeat(2,max-content);width:100%;justify-content:space-between;gap:0 .55rem;font-size:.9rem}
   .mast{display:block}.mast h1{font-size:clamp(2.8rem,11vw,4rem)}.mast .text-link{display:none}
   .stage-image{aspect-ratio:1.07}.gallery-bar{display:block;padding:.95rem 0 1rem}
   .cards{grid-template-columns:1fr;gap:2.3rem}.work-section{padding:3.6rem 0}.section-title{font-size:3rem}

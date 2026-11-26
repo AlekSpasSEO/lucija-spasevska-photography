@@ -89,7 +89,7 @@ tabs.forEach((button, index) => {
 });
 
 const filters = Array.from(document.querySelectorAll(".filter[data-filter]"));
-const cards = Array.from(document.querySelectorAll(".card[data-category]"));
+const cards = Array.from(document.querySelectorAll(".photo-tile[data-category], .card[data-category]"));
 const filterStatus = document.querySelector(".filter-status");
 filters.forEach(button => {
   button.addEventListener("click", () => {
@@ -104,11 +104,41 @@ filters.forEach(button => {
       filter.setAttribute("aria-pressed", String(filter === button));
     }
     if (filterStatus) {
-      filterStatus.textContent = visible + (visible === 1 ? " project shown." : " projects shown.");
+      filterStatus.textContent = visible + (visible === 1 ? " photograph shown." : " photographs shown.");
     }
     fitPhotographs();
   });
 });
+
+const contactForm = document.querySelector(".contact-form");
+if (contactForm) {
+  contactForm.addEventListener("submit", async event => {
+    event.preventDefault();
+    const status = contactForm.querySelector(".form-status");
+    const submit = contactForm.querySelector('button[type="submit"]');
+    const fields = new FormData(contactForm);
+    submit.disabled = true;
+    status.textContent = "Sending your message…";
+    try {
+      const response = await fetch(contactForm.action, {
+        method: "POST",
+        headers: { Accept: "application/json" },
+        body: new URLSearchParams(fields)
+      });
+      const result = await response.json();
+      if (!response.ok || result.success !== true) {
+        status.textContent = typeof result.error === "string" ? result.error : "Your message could not be sent. Please try again.";
+        return;
+      }
+      contactForm.reset();
+      status.textContent = "Thank you. Your message has been sent.";
+    } catch {
+      status.textContent = "Your message could not be sent. Please try again.";
+    } finally {
+      submit.disabled = false;
+    }
+  });
+}
 
 const dialog = document.querySelector(".viewer");
 if (dialog && typeof dialog.showModal === "function") {
@@ -116,30 +146,44 @@ if (dialog && typeof dialog.showModal === "function") {
   const image = dialog.querySelector(".viewer-photo img");
   const counter = dialog.querySelector(".viewer-index");
   const fullResolution = dialog.querySelector(".full-resolution");
+  const projectLink = dialog.querySelector(".viewer-project");
   const closeButton = dialog.querySelector("[data-close]");
   let index = 0;
   let opener;
   let start;
+  function visibleLinks() {
+    return links.filter(link => !link.closest(".photo-tile")?.hidden);
+  }
 
   function show(position) {
-    index = (position + links.length) % links.length;
-    image.src = links[index].href;
-    image.alt = links[index].querySelector("img").alt;
-    fullResolution.href = links[index].href;
-    const { fullWidth, fullHeight } = links[index].dataset;
+    const visible = visibleLinks();
+    if (!visible.length) return;
+    index = (position + visible.length) % visible.length;
+    const selected = visible[index];
+    image.src = selected.href;
+    image.alt = selected.querySelector("img").alt;
+    fullResolution.href = selected.href;
+    const { fullWidth, fullHeight, projectHref, projectTitle } = selected.dataset;
     image.dataset.nativeWidth = fullWidth;
     image.dataset.nativeHeight = fullHeight;
     fitViewer(image);
     fullResolution.title = fullWidth + " × " + fullHeight + " pixels (opens in a new tab)";
     fullResolution.setAttribute("aria-label", "Open full resolution, " + fullResolution.title);
-    counter.textContent = (index + 1) + " / " + links.length;
+    counter.textContent = (index + 1) + " / " + visible.length;
+    if (projectLink) {
+      projectLink.hidden = !projectHref;
+      if (projectHref) {
+        projectLink.href = projectHref;
+        projectLink.textContent = projectTitle;
+      }
+    }
   }
-  links.forEach((link, position) => {
+  links.forEach(link => {
     link.addEventListener("click", (event) => {
       if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
       event.preventDefault();
       opener = link;
-      show(position);
+      show(visibleLinks().indexOf(link));
       dialog.showModal();
       closeButton.focus();
     });
