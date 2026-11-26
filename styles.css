@@ -34,6 +34,20 @@ figure,p,h1,h2,h3{margin:0}
 .identity-quote{border-left:.28rem solid #d7d449;padding:clamp(.25rem,1vw,1rem) 0 clamp(.25rem,1vw,1rem) clamp(1.25rem,3vw,3.1rem)}
 .identity-quote blockquote{margin:0;max-width:19ch;font:italic 500 clamp(1.85rem,4vw,4.1rem)/1.12 Rajdhani,Arial,sans-serif;font-synthesis:style;text-wrap:balance}
 .identity-quote figcaption{margin-top:1.3rem;font:500 1rem/1.25 Rajdhani,Arial,sans-serif;letter-spacing:.12em;text-transform:uppercase}
+.intro{display:grid;grid-template-columns:clamp(12.5rem,17vw,15rem) minmax(0,1fr);grid-template-areas:"name quote" "portrait biography";column-gap:clamp(2rem,4vw,4.5rem);row-gap:1.2rem;align-items:start;width:min(100%,70rem);margin-inline:auto;padding-block:clamp(2.5rem,5vw,4.5rem) 0}
+.intro .identity-card{grid-area:name;position:relative;width:100%;padding:1rem 1.25rem .65rem;background:#292929}
+.intro .identity-card::after{content:"";position:absolute;right:1rem;top:1rem;width:2rem;height:2rem;border-top:2px solid #f7f7f7;border-right:2px solid #f7f7f7}
+.intro .identity-name{color:#fff;font:500 clamp(1.65rem,2vw,2.15rem)/.9 Rajdhani,Arial,sans-serif;letter-spacing:.02em}
+.intro .identity-role{padding:1rem 0 0;color:#d7d449;font:500 clamp(1.35rem,1.65vw,1.65rem)/1 Rajdhani,Arial,sans-serif;letter-spacing:.015em}
+.intro .identity-quote{grid-area:quote;align-self:start;margin:0;border-left:.18rem solid #d7d449;padding:.2rem 0 .2rem clamp(1.25rem,2.5vw,2.4rem)}
+.intro .identity-quote blockquote{max-width:none;font-size:clamp(2rem,2.7vw,2.8rem);line-height:1.12;text-wrap:balance}
+.intro .identity-quote figcaption{margin-top:.85rem;font-size:.875rem}
+.intro .about-figure{grid-area:portrait;justify-self:center;width:clamp(6.5rem,9vw,8rem);padding:.22rem;border:1px solid #d7d449;border-radius:50%}
+.intro .about-figure img{width:100%;height:auto;aspect-ratio:1;border-radius:50%;object-fit:cover}
+.intro .about-copy{grid-area:biography;max-width:48rem}
+.intro .about-copy .section-title{font-size:clamp(1.65rem,2.1vw,2.15rem);margin:.35rem 0 .85rem}
+.intro .about-copy .eyebrow{font-size:.875rem}
+.intro .about-copy p{max-width:none;line-height:1.65}
 .mast{display:flex;align-items:end;justify-content:space-between;gap:1.5rem;padding:clamp(2.2rem,4vw,4rem) 0 1.4rem}
 h1,h2,h3,.display{font:500 1rem/1 Rajdhani,Arial,sans-serif;text-transform:uppercase;letter-spacing:.01em}
 h1 em,h2 em{font-style:normal;font-weight:inherit}
@@ -143,6 +157,8 @@ body:has(.viewer[open]){overflow:hidden}
 @media(min-width:1900px){.stage-image{height:50rem}}
 @media(max-width:760px){
   .topbar{gap:1rem;padding-block:1rem}.brand{gap:.5rem}.brand-role{font-size:.8rem}.nav{gap:1rem;font-size:.9rem}
+  .intro{grid-template-columns:minmax(10rem,12.5rem) minmax(0,1fr);column-gap:1.5rem;padding-top:2.5rem}
+  .intro .identity-quote blockquote{font-size:clamp(1.6rem,3.8vw,2.2rem)}
   .identity{gap:1.6rem;padding-block:3.25rem}
   .identity-role{font-size:1.65rem}
   .mast h1{font-size:clamp(3rem,9vw,4.8rem)}.mast .text-link{font-size:.85rem}
@@ -159,6 +175,10 @@ body:has(.viewer[open]){overflow:hidden}
   .identity{grid-template-columns:1fr;gap:1.8rem}
   .identity-card{width:min(100%,19rem)}
   .identity-quote blockquote{font-size:2rem}
+  .intro{grid-template-columns:1fr;grid-template-areas:"name" "quote" "portrait" "biography";row-gap:1.4rem;padding-top:2rem}
+  .intro .identity-card{width:min(100%,14rem)}
+  .intro .identity-quote blockquote{font-size:2rem}
+  .intro .about-figure{justify-self:start}
   .about-text .about-copy{display:block}
   .about-text .about-copy .section-title{margin-bottom:1.35rem}
   .about .about-figure{order:0}
