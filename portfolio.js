@@ -88,6 +88,28 @@ tabs.forEach((button, index) => {
   });
 });
 
+const filters = Array.from(document.querySelectorAll(".filter[data-filter]"));
+const cards = Array.from(document.querySelectorAll(".card[data-category]"));
+const filterStatus = document.querySelector(".filter-status");
+filters.forEach(button => {
+  button.addEventListener("click", () => {
+    const category = button.dataset.filter;
+    let visible = 0;
+    for (const card of cards) {
+      const categories = card.dataset.category.split(/\s+/);
+      card.hidden = category !== "all" && !categories.includes(category);
+      if (!card.hidden) visible++;
+    }
+    for (const filter of filters) {
+      filter.setAttribute("aria-pressed", String(filter === button));
+    }
+    if (filterStatus) {
+      filterStatus.textContent = visible + (visible === 1 ? " project shown." : " projects shown.");
+    }
+    fitPhotographs();
+  });
+});
+
 const dialog = document.querySelector(".viewer");
 if (dialog && typeof dialog.showModal === "function") {
   const links = Array.from(document.querySelectorAll(".photo-link"));
