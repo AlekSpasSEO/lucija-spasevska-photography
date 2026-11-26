@@ -88,9 +88,13 @@ h1 em,h2 em{font-style:normal;font-weight:inherit}
 .collection-heading h1{font-size:clamp(3rem,7vw,8rem);max-width:17ch;text-wrap:balance}
 .collection-heading .count{padding-bottom:.3rem;white-space:nowrap}
 .photo-grid{columns:3;column-gap:clamp(.65rem,1.5vw,1.7rem)}
+.home-grid{columns:2;column-gap:0}
 .photo-link{display:block;position:relative;break-inside:avoid;margin:0 auto clamp(.65rem,1.5vw,1.7rem);background:#d9ded0;cursor:zoom-in}
 .photo-link img{display:block;width:100%;height:auto}
 .photo-tile{break-inside:avoid;margin:0 0 clamp(1.4rem,2vw,2.5rem)}
+.home-grid .photo-tile{margin:0;break-inside:avoid}
+.project-photo{display:block;background:#d9ded0}
+.project-photo img{width:100%;height:auto}
 .photo-tile .photo-link{margin-bottom:0}
 .photo-tile figcaption{padding:.65rem 0 0}
 .photo-project{display:inline-block;font:500 .95rem/1.3 Rajdhani,Arial,sans-serif;letter-spacing:.05em;text-transform:uppercase;text-decoration:underline;text-underline-offset:.25em}
@@ -121,7 +125,7 @@ body:has(.viewer[open]){overflow:hidden}
   .topbar{gap:1rem;padding-block:1rem}.brand{gap:.5rem}.brand-role{font-size:.8rem}.nav{gap:1rem;font-size:.9rem}
   .mast h1{font-size:clamp(3rem,9vw,4.8rem)}.mast .text-link{font-size:.85rem}
   .stage-image{height:auto;aspect-ratio:1.42}.gallery-bar{align-items:start}.feature-name{font-size:1.5rem}
-  .photo-grid{columns:2}.about{gap:2rem}.about-copy p{font-size:1rem}
+  .photo-grid{columns:2}.home-grid{columns:1}.about{gap:2rem}.about-copy p{font-size:1rem}
   .contact-row{align-items:start;flex-direction:column;gap:1.5rem}.footer-brand{margin-bottom:1.65rem}
 }
 @media(max-width:550px){
@@ -131,7 +135,7 @@ body:has(.viewer[open]){overflow:hidden}
   .cards{grid-template-columns:1fr;gap:2.3rem}.work-section{padding:3.6rem 0}.section-title{font-size:3rem}
   .about{grid-template-columns:1fr;padding:3.2rem 0;gap:2rem}.about-figure{order:2}.about-figure img{max-height:26rem}
   .filters{gap:.3rem 1.2rem}.filter{font-size:.95rem}
-  .collection-heading{display:block}.collection-heading .count{margin-top:.8rem}.photo-grid{column-gap:.5rem}.photo-link{margin-bottom:.5rem}
+  .collection-heading{display:block}.collection-heading .count{margin-top:.8rem}.photo-grid{column-gap:.5rem}.home-grid{column-gap:0}.photo-link{margin-bottom:.5rem}
   .viewer-header{height:auto;min-height:3.9rem}.viewer-header p{font-size:.83rem}.full-resolution{font-size:.82rem}
 }
 @media(max-width:350px){
