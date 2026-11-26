@@ -6,25 +6,72 @@ const stageLink = document.querySelector(".stage a");
 const featureName = document.querySelector(".feature-name");
 let featureVersion = 0;
 
+// Keep a photograph inside its native pixel budget on dense displays, including
+// crops where the painted image extends beyond the edges of its visible frame.
+const covers = [...document.querySelectorAll(".stage-image, .cover img, .about-figure img")];
+const galleryPhotos = [...document.querySelectorAll(".photo-link")];
+function fitCover(image) {
+  const ratio = window.devicePixelRatio || 1;
+  const maxWidth = Number(image.dataset.nativeWidth) / ratio;
+  const maxHeight = Number(image.dataset.nativeHeight) / ratio;
+  if (!maxWidth || !maxHeight) return;
+  const width = image.clientWidth;
+  const height = image.clientHeight;
+  const needsMat = width > maxWidth + 1 || height > maxHeight + 1;
+  image.classList.toggle("native-frame", needsMat);
+  image.style.paddingInline = needsMat ? Math.max(0,(width-maxWidth)/2) + "px" : "";
+  image.style.paddingBlock = needsMat ? Math.max(0,(height-maxHeight)/2) + "px" : "";
+}
+function fitViewer(image) {
+  const density = window.devicePixelRatio || 1;
+  image.style.maxWidth = Number(image.dataset.nativeWidth) / density + "px";
+  image.style.maxHeight = Number(image.dataset.nativeHeight) / density + "px";
+}
+function fitPhotographs() {
+  covers.forEach(fitCover);
+  for (const link of galleryPhotos) {
+    link.style.maxWidth = Number(link.dataset.fullWidth) / (window.devicePixelRatio || 1) + "px";
+  }
+  const openPhoto = document.querySelector(".viewer[open] .viewer-photo img");
+  if (openPhoto) fitViewer(openPhoto);
+}
+fitPhotographs();
+window.addEventListener("resize", fitPhotographs);
+function watchDensity() {
+  const density = window.matchMedia("(resolution: " + window.devicePixelRatio + "dppx)");
+  density.addEventListener("change", () => {
+    fitPhotographs();
+    watchDensity();
+  }, { once:true });
+}
+watchDensity();
+if (window.ResizeObserver) {
+  const coverObserver = new ResizeObserver(entries=>entries.forEach(entry=>fitCover(entry.target)));
+  covers.forEach(img=>coverObserver.observe(img, {box:"border-box"}));
+}
+
 function showFeature(button) {
   const version = ++featureVersion;
-  const { photo, small, title, href, alt, focus } = button.dataset;
+  const { photo, sources, title, href, alt, focus } = button.dataset;
   const next = new Image();
-  next.sizes = "(max-width: 550px) 95vw, 91vw";
-  next.srcset = small + " " + button.dataset.thumbWidth + "w, " + photo + " " + button.dataset.width + "w";
-  next.src = photo;
   next.onload = () => {
     if (version !== featureVersion) return;
     stageImage.srcset = next.srcset;
     stageImage.src = photo;
     stageImage.alt = alt;
     stageImage.style.objectPosition = focus;
+    stageImage.dataset.nativeWidth = button.dataset.nativeWidth;
+    stageImage.dataset.nativeHeight = button.dataset.nativeHeight;
+    fitCover(stageImage);
     stageLink.href = href;
     stageLink.setAttribute("aria-label", "View " + title);
     featureName.textContent = title;
     featureName.href = href;
     for (const tab of tabs) tab.setAttribute("aria-pressed", String(tab === button));
   };
+  next.sizes = stageImage.sizes;
+  next.srcset = sources;
+  next.src = photo;
 }
 
 tabs.forEach((button, index) => {
@@ -46,6 +93,7 @@ if (dialog && typeof dialog.showModal === "function") {
   const links = Array.from(document.querySelectorAll(".photo-link"));
   const image = dialog.querySelector(".viewer-photo img");
   const counter = dialog.querySelector(".viewer-index");
+  const fullResolution = dialog.querySelector(".full-resolution");
   const closeButton = dialog.querySelector("[data-close]");
   let index = 0;
   let opener;
@@ -55,6 +103,13 @@ if (dialog && typeof dialog.showModal === "function") {
     index = (position + links.length) % links.length;
     image.src = links[index].href;
     image.alt = links[index].querySelector("img").alt;
+    fullResolution.href = links[index].href;
+    const { fullWidth, fullHeight } = links[index].dataset;
+    image.dataset.nativeWidth = fullWidth;
+    image.dataset.nativeHeight = fullHeight;
+    fitViewer(image);
+    fullResolution.title = fullWidth + " × " + fullHeight + " pixels (opens in a new tab)";
+    fullResolution.setAttribute("aria-label", "Open full resolution, " + fullResolution.title);
     counter.textContent = (index + 1) + " / " + links.length;
   }
   links.forEach((link, position) => {
